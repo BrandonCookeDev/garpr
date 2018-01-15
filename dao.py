@@ -550,6 +550,15 @@ class Dao(object):
                                         }
                                      })
 
+    def update_region_activeTF(self, region_id, new_activeTF):
+        if self.regions_col.find_one({'_id': region_id}):
+            self.regions_col.update({'_id': region_id},
+                                    {'$set': 
+                                        {
+                                        'activeTF': new_activeTF
+                                        }
+                                    })
+
     def get_region(self, region_id):
         return M.Region.load(self.regions_col.find_one({'_id': region_id}), context='db')
 

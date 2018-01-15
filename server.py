@@ -83,6 +83,25 @@ class RegionListResource(restful.Resource):
 
         return regions_dict
 
+    def post(self):
+        dao = get_dao(None)
+        auth_user(request, dao, check_regions=False, needs_super=True)
+
+        parser = reqparse.RequestParser() \
+            .add_argument('region_id', type=str) \
+            .add_argument('activeTF', type=str) \
+
+        args = parser.parse_args()
+
+        region_id = args['region_id']
+        activeTF = args['activeTF'].lower() == 'true'
+        
+        try:
+            dao.update_region_activeTF(region_id, activeTF)
+            return 200
+        except:
+            return 'Error', 400
+
 
 class PlayerListResource(restful.Resource):
 

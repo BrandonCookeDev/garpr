@@ -4,12 +4,17 @@ angular.module('app.tools').controller("AdminFunctionsController", function($sco
     $scope.sessionService = SessionService;
 
     $scope.regions = []
-    $http.get(hostname + 'regions').
-        success(function(data) {
-            data.regions.forEach(function(region){
-                $scope.regions.push(region);
+
+    var updateRegions = function(){
+        $http.get(hostname + 'regions').
+            success(function(data) {
+                $scope.regions = [];
+                data.regions.forEach(function(region){
+                    $scope.regions.push(region);
+                });
             });
-        });
+    }
+    updateRegions();
 
     $scope.regionStatusMessage = "";
     $scope.userStatusMessage = "";
@@ -36,6 +41,31 @@ angular.module('app.tools').controller("AdminFunctionsController", function($sco
         if($scope.postParams.new_user_regions.includes(region))
             $scope.postParams.new_user_regions.splice($scope.postParams.new_user_regions.indexOf(region), 1);
     };
+
+    $scope.changeRegionActiveTF = function(region){
+        var region_id = region.id;
+        var newActiveTF  = !(region.activeTF)
+
+        var url = hostname + 'regions';
+        var postParams = {
+            region_id: region_id,
+            activeTF: newActiveTF
+        }
+
+        $scope.sessionService.authenticatedPost(url, postParams,
+            (data)=>{
+                //alert(region_id + ' active flag changed to ' + newActiveTF + '!');
+                // TODO refresh the scope
+                updateRegions();
+                $scope.regionService.updateRegionDropdown();
+            },
+            (err)=>{
+                if(err) {
+                    alert(err.message);
+                    return;
+                }
+            })
+    }
 
     $scope.checkRegionBox = function(region){
         var display_name = region.display_name;
@@ -78,6 +108,7 @@ angular.module('app.tools').controller("AdminFunctionsController", function($sco
 
         var form = document.getElementById('newRegionForm');
         resetForm(form);
+        updateRegions();
     };
 
     $scope.putUserSuccess = function(response, status, headers, bleh){

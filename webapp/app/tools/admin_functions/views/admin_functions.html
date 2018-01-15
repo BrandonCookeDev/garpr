@@ -22,6 +22,30 @@
 
                           <input class="btn btn-success mobile_small" type="submit" id="submit_new_region_btn" value="submit">
                       </form>
+                        <hr/>
+                      <div>
+                        <h4>Activation</h4>
+                        <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Active?</th>
+                            <th>Change?</th>
+                        </tr>
+                        <tr ng-repeat="r in regions">
+                            <td>
+                                {{r.display_name}}
+                            </td>
+                            <td>
+                                {{r.activeTF}}
+                            </td>
+                            <td>
+                                <form ng-submit='changeRegionActiveTF(r)'>
+                                    <input type='submit' class='btn btn-success' value='change'>
+                                </form>
+                            </td>
+                        </tr>
+                        </table>
+                      </div>
                   </div>
                 </div>
             </div>
