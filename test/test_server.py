@@ -199,7 +199,7 @@ class TestServer(unittest.TestCase):
                 'regions': [
                     {
                         'id': 'norcal', 
-                        'activeTF': 'true',
+                        'activeTF': True,
                         'display_name': 'Norcal',
                         'ranking_num_tourneys_attended': 2,
                         'ranking_activity_day_limit': 60,
@@ -207,7 +207,7 @@ class TestServer(unittest.TestCase):
                     },
                     {
                         'id': 'texas', 
-                        'activeTF': 'true',
+                        'activeTF': True,
                         'display_name': 'Texas',
                         'ranking_num_tourneys_attended': 2,
                         'ranking_activity_day_limit': 60,
