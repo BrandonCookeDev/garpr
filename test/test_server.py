@@ -55,8 +55,8 @@ class TestServer(unittest.TestCase):
     def setUpClass(cls):
         mongo_client = mongomock.MongoClient()
 
-        norcal_region = Region(id='norcal', display_name='Norcal')
-        texas_region = Region(id='texas', display_name='Texas')
+        norcal_region = Region(id='norcal', display_name='Norcal', activeTF=True)
+        texas_region = Region(id='texas', display_name='Texas', activeTF=True)
         Dao.insert_region(norcal_region, mongo_client)
         Dao.insert_region(texas_region, mongo_client)
 
@@ -132,8 +132,8 @@ class TestServer(unittest.TestCase):
         server.app.config['TESTING'] = True
         self.app = server.app.test_client()
 
-        self.norcal_region = Region(id='norcal', display_name='Norcal')
-        self.texas_region = Region(id='texas', display_name='Texas')
+        self.norcal_region = Region(id='norcal', display_name='Norcal', activeTF=True)
+        self.texas_region = Region(id='texas', display_name='Texas', activeTF=True)
 
         self.norcal_dao = Dao('norcal', mongo_client=self.mongo_client)
         self.assertIsNotNone(self.norcal_dao)
@@ -197,16 +197,27 @@ class TestServer(unittest.TestCase):
 
         expected_region_dict = {
                 'regions': [
-                    {'id': 'norcal', 'display_name': 'Norcal',
+                    {
+                        'id': 'norcal', 
+                        'activeTF': 'true',
+                        'display_name': 'Norcal',
                         'ranking_num_tourneys_attended': 2,
                         'ranking_activity_day_limit': 60,
-                        'tournament_qualified_day_limit': 999},
-                    {'id': 'texas', 'display_name': 'Texas',
+                        'tournament_qualified_day_limit': 999
+                    },
+                    {
+                        'id': 'texas', 
+                        'activeTF': 'true',
+                        'display_name': 'Texas',
                         'ranking_num_tourneys_attended': 2,
                         'ranking_activity_day_limit': 60,
-                        'tournament_qualified_day_limit': 999}
+                        'tournament_qualified_day_limit': 999
+                    }
                 ]
         }
+
+        print json.loads(data)
+        print expected_region_dict
 
         self.assertEquals(json.loads(data), expected_region_dict)
 
