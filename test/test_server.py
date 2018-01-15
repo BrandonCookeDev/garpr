@@ -216,10 +216,19 @@ class TestServer(unittest.TestCase):
                 ]
         }
 
-        print json.loads(data)
-        print expected_region_dict
-
         self.assertEquals(json.loads(data), expected_region_dict)
+
+
+    @patch('server.auth_user')
+    def test_change_region_active_flag(self, mock_admin_user):
+        data = {
+            'region_id': 'norcal',
+            'activeTF': 'false'
+        }
+
+        response = self.app.post('/regions', data=json.dumps(data), content_type='application/json')
+        self.assertEquals(response.status_code, 200)
+
 
     def test_get_player_list(self):
         def for_region(json_data, dao):
