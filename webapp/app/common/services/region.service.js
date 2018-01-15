@@ -2,6 +2,7 @@ angular.module('app.common').service('RegionService', function ($http, PlayerSer
     var service = {
         regionsPromise: $http.get(hostname + 'regions'),
         regions: [],
+        display_regions: [],
         region: '',
         setRegion: function (newRegionId) {
             if (!this.region || newRegionId != this.region.id) {
@@ -76,8 +77,16 @@ angular.module('app.common').service('RegionService', function ($http, PlayerSer
 
     service.regionsPromise.success(function(data) {
         service.regions = data.regions;
+
+        //SET THE REGION DROPDOWN BASED ON ACTIVE FLAG
+        data.regions.forEach(region => {
+            if(region.activeTF)
+                service.display_regions.push(region);
+
+        })
     });
 
+    /*
     service.display_regions = [{"id": "newjersey", "display_name": "New Jersey"}, // TODO: get this from server
                                {"id": "nyc", "display_name": "NYC Metro Area"},
                                {"id": "li", "display_name": "Long Island"},
@@ -97,5 +106,6 @@ angular.module('app.common').service('RegionService', function ($http, PlayerSer
                                {"id": "southernvirginia", "display_name": "SoVa"},
                                {"id": "blackhills", "display_name": "Black Hills (South Dakota)"}
                                ];
+                               */
     return service;
 });

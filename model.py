@@ -342,7 +342,8 @@ class Region(orm.Document):
               ('display_name', orm.StringField(required=True)),
               ('ranking_num_tourneys_attended', orm.IntField(required=True, default=2)),
               ('ranking_activity_day_limit', orm.IntField(required=True, default=60)),
-              ('tournament_qualified_day_limit', orm.IntField(required=True, default=999))]
+              ('tournament_qualified_day_limit', orm.IntField(required=True, default=999)),
+              ('activeTF', orm.BooleanField(required=True, default=True))]
 
 
 class User(orm.Document):
